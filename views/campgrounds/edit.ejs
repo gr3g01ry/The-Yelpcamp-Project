@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDIT CAMPGROUND</title>
+</head>
+<body>
+    <h1>EDIT CAMPGOUND</h1>
+    <form action="/campgrounds/<%=campground._id%>?_method=PATCH" method="post">
+        <div>
+            <label for="title">Title</label>
+            <!--  name=campground[title] will create a objet campground      -->
+            <input type="text" name="campground[title]" id="title" value="<%=campground.title%>">
+            <label for="description">Description</label>
+            <input type="text" name="campground[description]" id="description" value="<%=campground.description%>"><br>
+            <label for="location">location</label>
+            <input type="text" name="campground[location]" id="location" value="<%=campground.location%>">
+            <label for="price">price</label>
+            <input type="text" name="campground[price]" id="price" value="<%=campground.price%>"><br>
+            <button type="submit">Edit campground</button>
+        </div>
+    </form>
+    <a href="/campgrounds/<%=campground._id%>">Back to campground</a>
+</body>
+</html>

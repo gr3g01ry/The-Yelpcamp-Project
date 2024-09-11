@@ -1,24 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewCampground</title>
-</head>
-<body>
-    <form action="/campgrounds" method="post">
-        <div>
-            <label for="title">Title</label>
-            <!--  name=campground[title] will create a objet campground      -->
-            <input type="text" name="campground[title]" id="title">
-            <label for="description">Description</label>
-            <input type="text" name="campground[description]" id="description"><br>
-            <label for="location">location</label>
-            <input type="text" name="campground[location]" id="location">
-            <label for="price">price</label>
-            <input type="text" name="campground[price]" id="price"><br>
-            <button type="submit">Add new campground</button>
+<% layout('layouts/boilerplate.ejs') %> 
+
+<div class="container">
+    <div class="row bg-secondary-subtle">
+        <h1 class="text-center">
+            ADD A NEW CAMPGROUND
+        </h1>
+        <div class="col-6 offset-3 my-3">
+            <form action="/campgrounds" method="post">
+                <div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <!--  name=campground[title] will create a objet campground      -->
+                        <input type="text"  class="form-control" name="campground[title]" id="title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea type="textarea" rows="3"  class="form-control" name="campground[description]" id="description" ></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label me-2">Image url</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="logoForm">@</span>
+                            <input type="url"  class="form-control" name="campground[image]" id="description" >
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col input-group">
+                                <label for="location" class="form-label me-2">location</label>
+                                <span class="input-group-text" id="logoForm"> &#8982;</span>
+                                <input type="text"  class="form-control" name="campground[location]" id="location">
+                            </div>
+                            <div class="col input-group">
+                                <label for="price" class="form-label me-2">Price/Night</label>
+                                <span class="input-group-text" id="logoForm">€</span>
+                                <input type="text"  class="form-control" name="campground[price]" id="price" placeholder="8.90">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add new campground</button>
+                </div>
+                <a href="/campgrounds" class="btn btn-danger mt-1"> All campground</a>
+            </form>
         </div>
-    </form>
-</body>
-</html>
+    </div>
+</div>

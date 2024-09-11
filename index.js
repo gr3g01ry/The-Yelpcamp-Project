@@ -3,6 +3,7 @@ const app=express();
 const path = require("path");
 const mongoose=require('mongoose');
 const methodOverride=require('method-override');
+const ejsMate = require('ejs-mate');
 
 const Campground=require('./models/campground')
 
@@ -35,6 +36,11 @@ app.use(express.json())
 app.set("view engine", "ejs");
 // Set the views directory
 app.set("views", path.join(__dirname, "views"));
+
+//set statics file
+app.use(express.static('public'))
+// use ejs-locals for all ejs templates:
+app.engine('ejs', ejsMate);
 
 //MIDDLEWARE FOR FORM WITH OVERRIDE METHODE
 app.use(methodOverride('_method'));

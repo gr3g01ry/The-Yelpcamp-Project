@@ -1,23 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show campground</title>
-</head>
-<body>
-    <h1>SHOW CAMPGROUND</h1>
-    <h2><%=campground.title%></h2>
-    <h2><%=campground.id%></h2>
-    <h2><%=campground.description%></h2>
-    <h2><%=campground.location%></h2>
-    <h2><%=campground.price%></h2>
-    <footer>
-        <a href="/campgrounds"><h3>index Campgrounds</h3></a>
-        <a href="/campgrounds/<%=campground._id%>/edit"><h3>Edit Campgrounds</h3></a>
-        <form action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
-            <input type="submit" value="Delete <%=campground.title%>">
-        </form>
-    </footer>
-</body>
-</html>
+<% layout('layouts/boilerplate.ejs') %>
+    <div class="container">
+        <div class="col-5 mx-auto">
+            <div class="card">
+                <img src="<%= campground.image%>" alt="image campground" class="card-img-top">
+                <div class="card-body">
+                <h5 class="card-title"><%=campground.title%></h5>
+                <p class="card-text"><%=campground.description%></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item text-mute "><i class="bi bi-compass"></i> <%=campground.location%></li>
+                <li class="list-group-item lead text-center fw-bold"><%=campground.price%><i class="bi bi-currency-euro"></i>/night</li>
+                </ul>
+                <div class="card-body text-center">
+                <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-success">Edit campground</a>
+                <a href="/campgrounds" class="card-link btn btn-warning">All campgrounds</a>
+                <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
+                    <input class="btn btn-danger m-3" type="submit" value="Delete <%=campground.title%>">
+                </form>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    2 days ago
+                </div>
+            </div>
+        </div>
+    </div>

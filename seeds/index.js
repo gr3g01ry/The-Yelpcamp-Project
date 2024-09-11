@@ -28,6 +28,9 @@ const seedDB = async () => {
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             price:(Math.random()*100+30).toFixed(2),
+            image:`https://picsum.photos/400?random=${Math.random()}`,
+            // image:'https://api.api-ninjas.com/v1/randomimage?category=nature',
+            description:'Je suis la description XDXXDXDXDXDXDXDXDXDDXDXDXDX'
         });
         await camp.save()
         .then( res=>console.log(res))

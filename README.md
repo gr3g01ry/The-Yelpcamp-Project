@@ -17,6 +17,10 @@ For support, email braultgregory@gmail.com or join our Slack channel.
 
 A simple CRUD to Handle campground, no css, just handle road and first form. 
 
+## Capstone YELPCAMP project Step2
+
+Add style sheet and use new npm (ejs-mate) to layout display
+
 
 ## Authors
 

@@ -21,6 +21,14 @@ A simple CRUD to Handle campground, no css, just handle road and first form.
 
 Add style sheet and use new npm (ejs-mate) to layout display
 
+## Capstone YELPCAMP project Step3
+
+Errors and validating Data setting.
+    -Made with express basic error handler
+    -with a personnal class error handler
+    -JOI package, it's a schema validation.
+Purpose is to not crash server and be able to catch all kind error and give information to user
+
 
 ## Authors
 

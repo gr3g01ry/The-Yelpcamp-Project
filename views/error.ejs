@@ -1,0 +1,12 @@
+<% layout('layouts/boilerplate.ejs') %>
+
+<div class="alert text-bg-dark w-50 mx-auto my-5" role="alert">
+    <h4 class="alert-heading">Error type :<%=err.name%></h4>
+    <p>Aww yeah, you successfully read this important alert message. <br> <%=err.message%></p>
+    <hr>
+    <p>
+        StatusCode: <%=err.stack%>
+    </p>
+    <hr>
+    <p class="mb-0 text-danger lead">Whenever you need to, be sure to use greg's web site utilities to keep things nice and tidy.</p>
+</div>

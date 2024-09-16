@@ -1,25 +1,73 @@
 <% layout('layouts/boilerplate.ejs') %>
-    <div class="container">
-        <div class="col-5 mx-auto">
-            <div class="card">
-                <img src="<%= campground.image%>" alt="image campground" class="card-img-top">
-                <div class="card-body">
-                <h5 class="card-title"><%=campground.title%></h5>
-                <p class="card-text"><%=campground.description%></p>
+    <div class="container bg-white">
+        <div class="row gx-3 justify-content-center">
+
+            <div class="col-6">
+                <div class="card">
+                    <img src="<%= campground.image%>" alt="image campground" class="card-img-top">
+                    <div class="card-body">
+                    <h5 class="card-title"><%=campground.title%></h5>
+                    <p class="card-text"><%=campground.description%></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-mute "><i class="bi bi-compass"></i> <%=campground.location%></li>
+                    <li class="list-group-item lead text-center fw-bold"><%=campground.price%><i class="bi bi-currency-euro"></i>/night</li>
+                    </ul>
+                    <div class="card-body text-center">
+                    <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-success">Edit campground</a>
+                    <a href="/campgrounds" class="card-link btn btn-warning">All campgrounds</a>
+                    <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
+                        <input class="btn btn-danger m-3" type="submit" value="Delete <%=campground.title%>">
+                    </form>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        2 days ago
+                    </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                <li class="list-group-item text-mute "><i class="bi bi-compass"></i> <%=campground.location%></li>
-                <li class="list-group-item lead text-center fw-bold"><%=campground.price%><i class="bi bi-currency-euro"></i>/night</li>
-                </ul>
-                <div class="card-body text-center">
-                <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-success">Edit campground</a>
-                <a href="/campgrounds" class="card-link btn btn-warning">All campgrounds</a>
-                <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
-                    <input class="btn btn-danger m-3" type="submit" value="Delete <%=campground.title%>">
+            </div>
+            <div class="col-4"><h2>Leave an experience review</h2>
+                <form action="/campgrounds/<%=campground._id%>/reviews" class="my-3 needs-validation" method="post" novalidate>
+                    <div class="mb-3 ">
+                        <label for="title" class="form-label">title review</label>
+                        <input type="text" name="review[title]" id="title" maxlength="56" class="form-control" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please choose a title.
+                          </div>
+                    </div>
+                    <div class="mb-3 ">
+                        <label for="body" class="form-label">description review</label>
+                        <textarea name="review[body]" id="body" cols="30" rows="10" class="form-control" required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please describe your experience.
+                          </div>
+                    </div>
+                    <div class="mb-3 ">
+                        <label for="rating" class="form-label">rate</label>
+                        <input type="range" name="review[rating]" id="rating" min="1" max="10" step="0.5"  class="form-range" >
+                    </div>
+                    <button type="submit" class="d-grid col-4 btn btn-success mx-auto">Submit Review</button>
                 </form>
-                </div>
-                <div class="card-footer text-body-secondary">
-                    2 days ago
+           
+                <div class="mb-3">
+                    <h3 class="text-center">Ours rates</h3>
+                    <%for (let review of campground.reviews){%>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Title : <%=review.title%></h5>
+                                <h6 class="card-subtitle">Rating :<%=review.rating%></h6>
+                                <p class="card-text">Description :<%=review.body%></p>
+                                <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
+                                <input type="submit" value="Delete " class="btn btn-danger border border-warning">
+                                </form>
+                            </div>
+                        </div>
+                    <%}%>
                 </div>
             </div>
         </div>

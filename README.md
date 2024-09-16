@@ -29,6 +29,15 @@ Errors and validating Data setting.
     -JOI package, it's a schema validation.
 Purpose is to not crash server and be able to catch all kind error and give information to user
 
+## Capstone YELPCAMP project Step4
+
+    -Adding Review Model
+    -Creating review form
+    -Validating reveiw
+    -Display review
+    -Deleting review
+    -Deleting cascade (if deleting a campground, we delete review also)
+
 
 ## Authors
 

@@ -9,7 +9,8 @@ const Joi = require('joi');
 const Campground=require('./models/campground')
 const ExpressError=require('./utils/expressError');
 const catchAsync=require('./utils/catchAsync');
-const campgroundSchema=require('./models/schemas/schemas')
+const {campgroundSchema,reviewSchema}=require('./models/schemas/schemas')
+const Review=require('./models/reviews')
 
 //Connecting to mongoose
 mongoose.set('strictQuery', true);
@@ -61,6 +62,16 @@ const valideCampground=(req,res,next)=>{
         next();
     }
 }
+const validateReview=(req,res,next)=>{
+    console.log(req.body)
+    const {error}=reviewSchema.validate(req.body);
+    if(error){
+        const msg=error.details.map(el=>el.message).join('-');
+        throw new ExpressError(msg,400)
+    }else{
+        next();
+    }
+}
 
 
 const port=3000;
@@ -92,7 +103,8 @@ app.get('/campgrounds/:id',catchAsync(async (req,res,next)=>{
     // console.log(req.params);
     let {id}= req.params;
     console.log(id);
-    const campground= await Campground.findById(id);
+    const campground= await Campground.findById(id).populate('reviews');
+    console.log(campground);
     res.render('campgrounds/show.ejs',{campground});
 }));
 //EDIT ROAD
@@ -114,6 +126,29 @@ app.delete('/campgrounds/:id',catchAsync(async (req,res,next)=>{
     res.redirect(`/campgrounds`);
 }));
 
+/**REVIEW ROUTES */
+app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
+    let {id}=req.params;
+    let campground= await Campground.findById(id);
+    const review=new Review(req.body.review)
+    campground.reviews.push(review);
+    console.log(campground);
+    await review.save()
+    await campground.save()
+    // res.send('<h1>OK CATCh</h1>');
+    res.redirect(`/campgrounds/${campground._id}`)
+}))
+app.delete('/campgrounds/:campId/reviews/:reviewId',catchAsync(async (req,res,next)=>{
+    let {campId,reviewId}=req.params;
+    let campground=await Campground.findByIdAndUpdate(campId,{$pull:{reviews:reviewId}});
+    console.log(campground);
+    let review=await Review.findByIdAndDelete(reviewId);
+    console.log(review);
+    // res.send('ok deleted');
+    // let campground= await Campground.findByIdAndDelete(id);
+    // console.log(campground);
+    res.redirect(`/campgrounds/${campId}`);
+}));
 
 app.get('/error',(req,res)=>{
     res.render('error.ejs');
@@ -147,6 +182,11 @@ app.use((err,req,res,next)=>{
     // res.send('Something Went Wrong , we are lost')
     res.status(status).render('error.ejs',{err})
 })
+
+
+
+
+
 
 
 

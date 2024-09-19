@@ -5,12 +5,36 @@ const mongoose=require('mongoose');
 const methodOverride=require('method-override');
 const ejsMate = require('ejs-mate');
 const Joi = require('joi');
+const session=require('express-session');
+const flash = require('connect-flash');
 
-const Campground=require('./models/campground')
 const ExpressError=require('./utils/expressError');
-const catchAsync=require('./utils/catchAsync');
-const {campgroundSchema,reviewSchema}=require('./models/schemas/schemas')
-const Review=require('./models/reviews')
+
+const campgroundsRoad = require('./routes/campgrounds');
+const reviewsRoad=require('./routes/reviews')
+
+//Session configuration
+const sessionOptions = { 
+    name:'session_cookie',
+    secret: 'ILoveToLove', 
+    resave: false, 
+    saveUninitialized: true,
+    cookie:{
+        httpOnly:true,
+        expires:Date.now()+1000*60*60*24*7,
+        maxAge:1000*60*60*24*7,
+    } 
+}
+app.use(session(sessionOptions));
+
+//flash MIDDLEWARE
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 //Connecting to mongoose
 mongoose.set('strictQuery', true);
@@ -41,37 +65,19 @@ app.set("view engine", "ejs");
 // Set the views directory
 app.set("views", path.join(__dirname, "views"));
 
-//set statics file
-app.use(express.static('public'))
 // use ejs-locals for all ejs templates:
 app.engine('ejs', ejsMate);
+
+//set statics file (css,js,images)
+app.use(express.static(path.join(__dirname,'public')));
+// app.use(express.static('publics'))
 
 //MIDDLEWARE FOR FORM WITH OVERRIDE METHODE
 app.use(methodOverride('_method'));
 
-//middleware to JOI validator 
-const valideCampground=(req,res,next)=>{
-    console.log(req.body)
-    const {error}=campgroundSchema.validate(req.body);
-    // console.log(resultJoi);
-    if(error){
-        const msg=error.details.map(el=>el.message).join('-');
-        // throw new ExpressError(resultJoi.error.details,400)
-        throw new ExpressError(msg,400)
-    }else{
-        next();
-    }
-}
-const validateReview=(req,res,next)=>{
-    console.log(req.body)
-    const {error}=reviewSchema.validate(req.body);
-    if(error){
-        const msg=error.details.map(el=>el.message).join('-');
-        throw new ExpressError(msg,400)
-    }else{
-        next();
-    }
-}
+//for express road
+app.use('/campgrounds', campgroundsRoad);
+app.use('/campgrounds/:id/reviews',reviewsRoad);
 
 
 const port=3000;
@@ -79,76 +85,6 @@ const port=3000;
 app.get('/',(req,res)=>{
     res.render('home.ejs')
 });
-
-app.get('/campgrounds',async (req,res)=>{
-    const campgrounds= await Campground.find();
-    res.render('campgrounds/index.ejs',{campgrounds});
-});
-
-app.get('/campgrounds/new',(req,res)=>{
-    res.render('campgrounds/new.ejs')
-})
-app.post('/campgrounds',valideCampground, catchAsync(async (req,res,next)=>{
-    // let {campground}=req.body;
-    //too basic security
-    // if(!req.body.campground)throw new ExpressError('Invalid, Missing data',422)
-    //better option use JOI package
-        let campground=new Campground(req.body.campground);
-        await campground.save();
-        res.redirect(`/campgrounds/${campground._id}`);
-}));
-
-app.get('/campgrounds/:id',catchAsync(async (req,res,next)=>{
-    // console.log('campground id');
-    // console.log(req.params);
-    let {id}= req.params;
-    console.log(id);
-    const campground= await Campground.findById(id).populate('reviews');
-    console.log(campground);
-    res.render('campgrounds/show.ejs',{campground});
-}));
-//EDIT ROAD
-app.get('/campgrounds/:id/edit',catchAsync(async(req,res,next)=>{
-    let {id}=req.params;
-    const campground= await Campground.findById(id);
-    res.render('campgrounds/edit.ejs',{campground});
-}));
-app.patch('/campgrounds/:id',valideCampground, catchAsync(async (req,res,next)=>{
-    let {id}=req.params;
-    let campground= await Campground.findByIdAndUpdate(id,{...req.body.campground});
-    res.redirect(`/campgrounds/${campground._id}`);
-}));
-
-app.delete('/campgrounds/:id',catchAsync(async (req,res,next)=>{
-    let {id}=req.params;
-    let campground= await Campground.findByIdAndDelete(id);
-    console.log(campground);
-    res.redirect(`/campgrounds`);
-}));
-
-/**REVIEW ROUTES */
-app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
-    let {id}=req.params;
-    let campground= await Campground.findById(id);
-    const review=new Review(req.body.review)
-    campground.reviews.push(review);
-    console.log(campground);
-    await review.save()
-    await campground.save()
-    // res.send('<h1>OK CATCh</h1>');
-    res.redirect(`/campgrounds/${campground._id}`)
-}))
-app.delete('/campgrounds/:campId/reviews/:reviewId',catchAsync(async (req,res,next)=>{
-    let {campId,reviewId}=req.params;
-    let campground=await Campground.findByIdAndUpdate(campId,{$pull:{reviews:reviewId}});
-    console.log(campground);
-    let review=await Review.findByIdAndDelete(reviewId);
-    console.log(review);
-    // res.send('ok deleted');
-    // let campground= await Campground.findByIdAndDelete(id);
-    // console.log(campground);
-    res.redirect(`/campgrounds/${campId}`);
-}));
 
 app.get('/error',(req,res)=>{
     res.render('error.ejs');
@@ -169,9 +105,9 @@ app.get('/error',(req,res)=>{
 // })
 //Error handler from extends class Error to add before general error handler
 //app.all is used for all method road
-app.all('*',(req,res,next)=>{
-    next(new ExpressError('Page no found',404))
-})
+// app.all('*',(req,res,next)=>{
+//     next(new ExpressError('Page no found',404))
+// })
 
 //Error handler from express
 app.use((err,req,res,next)=>{
@@ -182,11 +118,6 @@ app.use((err,req,res,next)=>{
     // res.send('Something Went Wrong , we are lost')
     res.status(status).render('error.ejs',{err})
 })
-
-
-
-
-
 
 
 

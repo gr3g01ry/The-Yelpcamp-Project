@@ -38,6 +38,12 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Deleting review
     -Deleting cascade (if deleting a campground, we delete review also)
 
+## Capstone YELPCAMP project Step5
+
+    -Express routing for campground and review
+    -Cookies et sessions setting
+    -setting flash messages for users
+
 
 ## Authors
 

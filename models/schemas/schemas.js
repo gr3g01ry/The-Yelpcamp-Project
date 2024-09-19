@@ -14,7 +14,7 @@ const campgroundSchema=Joi.object({
 
 const reviewSchema=Joi.object({
     review:Joi.object({
-        title:Joi.string().min(6).max(56).required(),
+        title:Joi.string().min(6).max(56).trim().required(),
         body:Joi.string().min(15).required(),
         rating:Joi.number().min(0).max(10).required(),
     }).required()

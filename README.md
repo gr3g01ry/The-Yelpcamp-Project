@@ -44,6 +44,15 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Cookies et sessions setting
     -setting flash messages for users
 
+## Capstone YELPCAMP project Step6
+
+    -Creating our User Model
+    -Configuring Passport (local)
+    -Register form
+    -Route logic é& login routes
+    -Is Logged Middleware
+    -retur Behavior
+
 
 ## Authors
 

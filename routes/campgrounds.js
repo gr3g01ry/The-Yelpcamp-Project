@@ -5,8 +5,11 @@ const router = express.Router({mergeParams:true});
 const catchAsync=require('../utils/catchAsync');
 const Campground=require('../models/campground');
 const ExpressError=require('../utils/expressError');
+const isLoggedIn=require('../middleware');
+
 const {campgroundSchema,reviewSchema}=require('../models/schemas/schemas')
 const Review=require('../models/reviews');
+
 
 
 const valideCampground=(req,res,next)=>{
@@ -27,10 +30,13 @@ router.get('/',async (req,res)=>{
     res.render('campgrounds/index.ejs',{campgrounds});
 });
 
-router.get('/new',(req,res)=>{
+router.get('/new',isLoggedIn,(req,res)=>{
+    // console.log('intermitant')
+    // console.log(req);
+    
     res.render('campgrounds/new.ejs')
 })
-router.post('/',valideCampground, catchAsync(async (req,res,next)=>{
+router.post('/',isLoggedIn,valideCampground, catchAsync(async (req,res,next)=>{
     // let {campground}=req.body;
     //too basic security
     // if(!req.body.campground)throw new ExpressError('Invalid, Missing data',422)
@@ -57,7 +63,7 @@ router.get('/:id',catchAsync(async (req,res,next)=>{
     }
 }));
 //EDIT ROAD
-router.get('/:id/edit',catchAsync(async(req,res,next)=>{
+router.get('/:id/edit',isLoggedIn,catchAsync(async(req,res,next)=>{
     let {id}=req.params;
     const campground= await Campground.findById(id);
     if(!campground){
@@ -67,7 +73,7 @@ router.get('/:id/edit',catchAsync(async(req,res,next)=>{
     res.render('campgrounds/edit.ejs',{campground});
 }));
 
-router.patch('/:id',valideCampground, catchAsync(async (req,res,next)=>{
+router.patch('/:id',isLoggedIn,valideCampground, catchAsync(async (req,res,next)=>{
     let {id}=req.params;
     let campground= await Campground.findByIdAndUpdate(id,{...req.body.campground});
     req.flash('success','ok you have edited campground');
@@ -75,7 +81,7 @@ router.patch('/:id',valideCampground, catchAsync(async (req,res,next)=>{
 }));
 
 //Delete ROAD
-router.delete('/:id',catchAsync(async (req,res,next)=>{
+router.delete('/:id',isLoggedIn,catchAsync(async (req,res,next)=>{
     let {id}=req.params;
     let campground= await Campground.findByIdAndDelete(id);
     console.log(campground);

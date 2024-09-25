@@ -1,13 +1,13 @@
 
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" data-bs-theme="dark">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top align-item-center" data-bs-theme="dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">YelpCamp Summer</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
+      <div class="collapse navbar-collapse " id="navbarNav">
+        <ul class="navbar-nav mx-auto">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
@@ -18,6 +18,14 @@
             <a class="nav-link" href="/campgrounds/new">New CAMP</a>
           </li>
         </ul>
+        <div class="col-md-3 text-end">
+          <% if(!currentUser){ %>
+          <button type="button" class="btn btn-outline-primary me-2 "><a href="/login">Login</a></button></div>
+          <button type="button" class="btn btn-primary "><a href="/register">Sign-up</a></button>
+          <%}else{%>
+          <button type="button" class="btn btn-outline-danger me-2 "><a href="/logout">Logout</a></button>
+          <%}%>
+        </div>
       </div>
     </div>
   </nav>

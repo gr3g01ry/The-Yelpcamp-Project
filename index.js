@@ -7,34 +7,17 @@ const ejsMate = require('ejs-mate');
 const Joi = require('joi');
 const session=require('express-session');
 const flash = require('connect-flash');
+const passport=require('passport');
+const LocalStrategy=require('passport-local');
 
 const ExpressError=require('./utils/expressError');
 
+//roads
 const campgroundsRoad = require('./routes/campgrounds');
-const reviewsRoad=require('./routes/reviews')
+const reviewsRoad=require('./routes/reviews');
+const usersRoad=require('./routes/user')
 
-//Session configuration
-const sessionOptions = { 
-    name:'session_cookie',
-    secret: 'ILoveToLove', 
-    resave: false, 
-    saveUninitialized: true,
-    cookie:{
-        httpOnly:true,
-        expires:Date.now()+1000*60*60*24*7,
-        maxAge:1000*60*60*24*7,
-    } 
-}
-app.use(session(sessionOptions));
-
-//flash MIDDLEWARE
-app.use(flash());
-
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
+const User = require('./models/user');
 
 //Connecting to mongoose
 mongoose.set('strictQuery', true);
@@ -53,6 +36,46 @@ db.once("open",()=>{
     console.log("and database connected");
 });
 
+//Session configuration
+const sessionOptions = { 
+    name:'session_cookie',
+    secret: 'ILoveToLove', 
+    resave: false, 
+    saveUninitialized: true,
+    cookie:{
+        httpOnly:true,
+        expires:Date.now()+1000*60*60*24*7,
+        maxAge:1000*60*60*24*7,
+    } 
+}
+//App use session() must be before passeport.session()
+app.use(session(sessionOptions));
+
+//flash MIDDLEWARE
+app.use(flash());
+
+//passeport
+app.use(passport.initialize());
+app.use(passport.session());
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+app.use((req, res, next) => {
+    // console.log(req.user);
+    console.log(req.session);
+    res.locals.currentUser=req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
+
+
 // MIDDLEWARE express
 //To parse form data in POST request body:
 app.use(express.urlencoded({ extended: true }))
@@ -69,15 +92,19 @@ app.set("views", path.join(__dirname, "views"));
 app.engine('ejs', ejsMate);
 
 //set statics file (css,js,images)
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'publics')));
 // app.use(express.static('publics'))
 
 //MIDDLEWARE FOR FORM WITH OVERRIDE METHODE
 app.use(methodOverride('_method'));
 
+
 //for express road
 app.use('/campgrounds', campgroundsRoad);
 app.use('/campgrounds/:id/reviews',reviewsRoad);
+// express road register
+app.use('/',usersRoad);
+
 
 
 const port=3000;

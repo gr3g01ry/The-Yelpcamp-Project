@@ -53,6 +53,13 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Is Logged Middleware
     -retur Behavior
 
+## Capstone YELPCAMP project Step7
+
+    -Creating our Author model and associate user
+    -Showing and hinding Edit delete review
+    -Handle campground permission to  crud
+    -Authorization middleware isAuthor, isReviewAuthor
+    -Review authorization
 
 ## Authors
 

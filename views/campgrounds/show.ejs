@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate.ejs') %>
     <div class="container bg-white">
-        <div class="row gx-3 justify-content-center">
+        <div class="row gx-3 justify-content-around">
 
             <div class="col-6">
                 <div class="card">
@@ -10,22 +10,32 @@
                     <p class="card-text"><%=campground.description%></p>
                     </div>
                     <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-mute "><i class="bi bi-compass"></i> <%=campground.location%></li>
+                    <li class="list-group-item text-mute ">
+                        <div class="d-flex justify-content-around">
+                            <i class="bi bi-compass"><%=campground.location%></i>  
+                            <div class="text-align-end">Submited by: <b><%=campground.author.username%></b></div>
+                        </div>
+                    </li>
                     <li class="list-group-item lead text-center fw-bold"><%=campground.price%><i class="bi bi-currency-euro"></i>/night</li>
                     </ul>
                     <div class="card-body text-center">
-                    <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-success">Edit campground</a>
-                    <a href="/campgrounds" class="card-link btn btn-warning">All campgrounds</a>
-                    <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
+                        <a href="/campgrounds" class="card-link btn btn-warning">All campgrounds</a>
+                        <%
+                        if(currentUser && campground.author.equals(currentUser._id)){%>
+                        <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-success">Edit campground</a>
+                        <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="post">
                         <input class="btn btn-danger m-3" type="submit" value="Delete <%=campground.title%>">
-                    </form>
+                        </form>
+                    <%}%>
                     </div>
                     <div class="card-footer text-body-secondary">
                         2 days ago
                     </div>
                 </div>
             </div>
-            <div class="col-4"><h2>Leave an experience review</h2>
+            <div class="col-4">
+                <%if(currentUser){%>
+                <h2>Leave an experience review</h2>
                 <form action="/campgrounds/<%=campground._id%>/reviews" class="my-3 needs-validation" method="post" novalidate>
                     <div class="mb-3 ">
                         <label for="title" class="form-label">title review</label>
@@ -53,20 +63,32 @@
                     </div>
                     <button type="submit" class="d-grid col-4 btn btn-success mx-auto">Submit Review</button>
                 </form>
-           
+                <%}%>
                 <div class="mb-3">
+                    <%if(campground.reviews.length==0){%>
+                    <h3 class="text-center mb-5">No rates yets</h3>
+                    <h6 class="fs-5 font-monospace fw-semibold text-center">Be our godfather &#9812;</h6>
+                    <%}else{%>
                     <h3 class="text-center">Ours rates</h3>
+                    <%}%>
                     <%for (let review of campground.reviews){%>
-                        <div class="card">
+                        <div class="card mb-2">
+                            <h5 class="card-header">Title : <%=review.title%></h5>
                             <div class="card-body">
-                                <h5 class="card-title">Title : <%=review.title%></h5>
+                                <h6 class="card-title lead fst-italic fs-6 text-end">By : <%=review.author.username%></h6>
                                 <h6 class="card-subtitle">Rating :<%=review.rating%></h6>
                                 <p class="card-text">Description :<%=review.body%></p>
-                                <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
-                                <input type="submit" value="Delete " class="btn btn-danger border border-warning">
-                                </form>
+                                <%if(currentUser && review.author.equals(currentUser._id)){%>
+                                    <h6>Yur review</h1>
+                                    <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
+                                        <input type="submit" value="Delete " class="btn btn-danger border border-warning">
+                                        </form>
+                                <%}%>
                             </div>
                         </div>
+                    <%}%>
+                    <%if(!currentUser){%>
+                    <h3>Subscribe to leave a review</h3>
                     <%}%>
                 </div>
             </div>

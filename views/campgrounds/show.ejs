@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/styles/stars.css">
     <div class="container bg-white">
         <div class="row gx-3 justify-content-around">
 
@@ -58,8 +59,33 @@
                           </div>
                     </div>
                     <div class="mb-3 ">
-                        <label for="rating" class="form-label">rate</label>
-                        <input type="range" name="review[rating]" id="rating" min="1" max="10" step="0.5"  class="form-range" >
+                        <!--<label for="rating" class="form-label">rate</label>
+                        <input type="range" name="review[rating]" id="rating" min="1" max="10" step="0.5"  class="form-range" >-->
+                        <fieldset class="starability-heartbeat">
+                        <legend class="form-label">Rating:</legend>
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="5"  aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                        <input type="radio" id="first-rate6" name="review[rating]" value="6" checked/>
+                        <label for="first-rate6" title="Amazing">6 stars</label>
+                        <input type="radio" id="first-rate7" name="review[rating]" value="7" />
+                        <label for="first-rate7" title="Amazing">7 stars</label>
+                        <input type="radio" id="first-rate8" name="review[rating]" value="8" />
+                        <label for="first-rate8" title="Amazing">8 stars</label>
+                        <input type="radio" id="first-rate9" name="review[rating]" value="9" />
+                        <label for="first-rate9" title="Amazing">9 stars</label>
+                        <input type="radio" id="first-rate10" name="review[rating]" value="10" />
+                        <label for="first-rate10" title="Amazing">10 stars</label>
+
+                        </fieldset>
                     </div>
                     <button type="submit" class="d-grid col-4 btn btn-success mx-auto">Submit Review</button>
                 </form>
@@ -77,6 +103,19 @@
                             <div class="card-body">
                                 <h6 class="card-title lead fst-italic fs-6 text-end">By : <%=review.author.username%></h6>
                                 <h6 class="card-subtitle">Rating :<%=review.rating%></h6>
+                                <h4 ><%for (let i=0;i<10;i++){%>
+                                    <%if (i<review.rating) {%>
+                                        <span class="text-warning fw-bolder">
+                                            &#10029;
+                                        </span>
+                                    <%}else{%>
+                                        &#10032;
+                                    <%}%>
+                                <%}%></h4>
+                                <h6>Rated element name with starability</h6>
+                                <p class="starability-result" data-rating="<%=review.rating%>">
+                                    Rated: <%=review.rating%> stars
+                                </p>
                                 <p class="card-text">Description :<%=review.body%></p>
                                 <%if(currentUser && review.author.equals(currentUser._id)){%>
                                     <h6>Yur review</h1>

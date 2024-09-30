@@ -126,15 +126,16 @@ app.get('/error',(req,res)=>{
 
 
 // //Route par default always in the end /*Better way after */
-// app.get('*', function (req, res) {
-//     console.log( req.params);
-//     res.send(`<h1>What the fuck is this url</h1>`)
-// })
+app.get('*', function (req, res) {
+    console.log( req.params);
+    res.send(`<h1>What the fuck is this url</h1>`)
+})
+
 //Error handler from extends class Error to add before general error handler
 //app.all is used for all method road
-// app.all('*',(req,res,next)=>{
-//     next(new ExpressError('Page no found',404))
-// })
+app.all('*',(req,res,next)=>{
+    next(new ExpressError('Page no found',404))
+})
 
 //Error handler from express
 app.use((err,req,res,next)=>{

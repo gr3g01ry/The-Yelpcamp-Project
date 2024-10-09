@@ -61,6 +61,15 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Authorization middleware isAuthor, isReviewAuthor
     -Review authorization
 
+## Capstone YELPCAMP project Step8:Image Upload handler
+    -Multer middleware to handle image upload and modify form with attribute enctype="multipart/form-data
+    -Storage image upload in local
+    -Storage in cloudinary and displayng images from link cloudinary
+    -Addiding upload to edit file
+    -customize file input
+    -Deleting images form from the data and on cloudinary
+    -Adding a thumbnail Virtual property
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 // const flash = require('connect-flash');
+const multer  = require('multer');
+const{storage,cloudinary}=require('../cloudinary');
+const upload = multer({ storage })
 
 const catchAsync=require('../utils/catchAsync');
 const ExpressError=require('../utils/expressError');
@@ -13,45 +16,23 @@ const {campgroundSchema,reviewSchema}=require('../models/schemas/schemas')
 
 const campgrounds=require('../controllers/campgrounds');
 
-
-
-
-// const valideCampground=(req,res,next)=>{
-//     console.log(req.body)
-//     const {error}=campgroundSchema.validate(req.body);
-//     // console.log(resultJoi);
-//     if(error){
-//         const msg=error.details.map(el=>el.message).join('-');
-//         // throw new ExpressError(resultJoi.error.details,400)
-//         throw new ExpressError(msg,400)
-//     }else{
-//         next();
-//     }
-// }
-
-// const isAuthor=async (req,res,next)=>{
-//     let {id}=req.params;
-//     let campground =await Campground.findById(id);
-//     if(!campground.author.equals(req.user._id)){
-//         req.flash('error','You are not the yelpcamp\'s owner');
-//         return res.redirect(`/campgrounds/${id}`);
-//     }
-//     next();
-// }
-
 router.route('/')
     .get(catchAsync(campgrounds.index))
     .post(
         isLoggedIn,
+        upload.array('image'),
         valideCampground, 
         catchAsync(campgrounds.createCampground));
+        
+router.get('/new',isLoggedIn,campgrounds.renderNewForm)
 
 router.route('/:id')
     .get(catchAsync(campgrounds.showCampground))
     .patch(
         isLoggedIn,
-        valideCampground,
         isAuthor, 
+        upload.array('image'),
+        valideCampground,
         catchAsync(campgrounds.updateCampground))
     .delete(
         isLoggedIn,
@@ -60,7 +41,6 @@ router.route('/:id')
 
 // router.get('/',catchAsync(campgrounds.index));
 
-router.get('/new',isLoggedIn,campgrounds.renderNewForm)
 
 // router.post('/',isLoggedIn,valideCampground, catchAsync(campgrounds.createCampground));
 

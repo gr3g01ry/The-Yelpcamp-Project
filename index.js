@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV!=="production"){
+    require('dotenv').config()
+}
+// console.log(process.env.cloudinaryApiKey);
+
 const express=require('express');
 const app=express();
 const path = require("path");

@@ -13,12 +13,24 @@ ImageSchema.virtual('thumbnail').get(function(){
 ImageSchema.virtual('showCarousel').get(function(){
     return this.url.replace('/upload','/upload/h_400')
 })
+
 const CampgroundSchema=new Schema({
     title:String,
     images:[ImageSchema],
     price:Number,
     description:String,
     location:String,
+    geometry:{
+       type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     author:{
         type:Schema.Types.ObjectId,
         ref:'User'

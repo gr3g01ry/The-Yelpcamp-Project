@@ -70,6 +70,13 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Deleting images form from the data and on cloudinary
     -Adding a thumbnail Virtual property
 
+## Capstone YELPCAMP project Step9:Adding Maps to geolocate campgrounds
+    -Register on Mapbox
+    -Geocoding our location
+    -Working with geoJSON
+    -Displaying a Map
+    -Centering map and add a point and popup
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

@@ -1,5 +1,8 @@
 const Campground=require('../models/campground');
 const{cloudinary}=require('../cloudinary');
+const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken=process.env.MAPBOX_TOKEN
+const geocoder=mbxGeocoding({accessToken:mapboxToken})
 
 module.exports.index=async (req,res)=>{
     // console.log('campgroundIndex')
@@ -12,15 +15,28 @@ module.exports.renderNewForm=(req,res)=>{
 }
 
 module.exports.createCampground=async (req,res,next)=>{
-    console.log(req.files);
-    
+    // console.log(req.files);
+    let getData=await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+      })
+      .send()
+    //   .then(resp=>resp)
+    //   console.log(getData);
+    // res.send(getData.body.features[0].geometry.coordinates);
     let campground=new Campground(req.body.campground);
+    campground.geometry=getData.body.features[0].geometry;
+    if(!campground.geometry){
+        req.flash('error','Not a valid address');
+        return res.redirect('/campgrounds/new')
+    }
     campground.images=req.files.map(elt=>({url:elt.path, filename:elt.filename}))
     campground.author=req.user._id;
     await campground.save();
     console.log(campground);
     req.flash('success','CONGRADULATION you have add a new campground');
     res.redirect(`/campgrounds/${campground._id}`);
+    // res.send('ok guy')
 }
 
 module.exports.showCampground=async (req,res,next)=>{

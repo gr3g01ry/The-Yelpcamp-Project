@@ -22,13 +22,17 @@ const seedDB = async () => {
     await Campground.deleteMany({});
     // const campFind=Campground.find({});
     // console.log(campFind);
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const camp = new Campground({
             author:'66f3307bf743e8835d4e052a',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             price:(Math.random()*100+30).toFixed(2),
+            geometry:{
+              type:"Point",
+              coordinates:[-113.1331,47.0202]
+            },
             images:[
                 {
                   url: 'https://res.cloudinary.com/student-node/image/upload/v1728065662/YelpCamp2.0/xusaalq3ylh6hlrobhxn.jpg',

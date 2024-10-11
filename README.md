@@ -77,6 +77,12 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Displaying a Map
     -Centering map and add a point and popup
 
+## Capstone YELPCAMP project Step10:Fancy a Cluster Map
+    -Add a cluster map on index pages
+    -Connect our data
+    -Styling cluster page
+    -Adding popup ppersonnalized
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

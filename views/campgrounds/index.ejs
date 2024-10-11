@@ -1,32 +1,38 @@
 <% layout('layouts/boilerplate.ejs') %>
-
-    <h1>ALL CAMPGROUNDS</h1>
-    <div class="text-center">
-        <a href="/campgrounds/new" class="btn btn-lg btn-success  mb-3">ADD A CAMPGROUND</a>
-    </div>
-    <ul>
-        <%for(let campground of  campgrounds ){%>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-4">
-                        <% if(!campground.images.lenght){%>
-                        <img src="<%=campground.images[0].url%>" alt="image campground" class="img-fluid">
-                        <%}else{%>
-                            <img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9nJTIwY2FtcGluZ3xlbnwwfHwwfHx8MA%3D%3D" alt="image campground" class="img-fluid">
-                        <%}%>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title"><%=campground.title%></h5>
-                            <p class="card-text"><%=campground.description%></p>
-                            <p class="card-text">
-                                <small class="text-muted"><%=campground.location%></small>
-                            </p>
-                            <a href="/campgrounds/<%=campground.id%>" class="btn btn-primary">View more <%=campground.title%></a>
-                        </div>
+<h1 class="text-center">ALL CAMPGROUNDS</h1>
+<div id="map" style="width:100%;height:350px;margin:auto;"></div>
+<div class="text-center">
+    <a href="/campgrounds/new" class="btn btn-lg btn-success  my-3">ADD A CAMPGROUND</a>
+</div>
+<ul>
+    <%for(let campground of  campgrounds ){%>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if(!campground.images.lenght){%>
+                    <img src="<%=campground.images[0].url%>" alt="image campground" class="img-fluid">
+                    <%}else{%>
+                        <img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9nJTIwY2FtcGluZ3xlbnwwfHwwfHx8MA%3D%3D" alt="image campground" class="img-fluid">
+                    <%}%>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%=campground.title%></h5>
+                        <p class="card-text"><%=campground.description%></p>
+                        <p class="card-text">
+                            <small class="text-muted"><%=campground.location%></small>
+                        </p>
+                        <a href="/campgrounds/<%=campground.id%>" class="btn btn-primary">View more <%=campground.title%></a>
                     </div>
                 </div>
-
             </div>
-        <%}%>
-    </ul>
+
+        </div>
+    <%}%>
+</ul>
+<script>
+const mapToken='<%-process.env.MAPBOX_TOKEN%>';
+const campgrounds={features:<%-JSON.stringify(campgrounds)%>};
+
+</script>
+<script src="/js/clusterMap.js"></script>

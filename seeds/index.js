@@ -22,7 +22,7 @@ const seedDB = async () => {
     await Campground.deleteMany({});
     // const campFind=Campground.find({});
     // console.log(campFind);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 60; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const camp = new Campground({
             author:'66f3307bf743e8835d4e052a',
@@ -31,7 +31,7 @@ const seedDB = async () => {
             price:(Math.random()*100+30).toFixed(2),
             geometry:{
               type:"Point",
-              coordinates:[-113.1331,47.0202]
+              coordinates:[cities[random1000].longitude,cities[random1000].latitude]
             },
             images:[
                 {

@@ -14,6 +14,8 @@ ImageSchema.virtual('showCarousel').get(function(){
     return this.url.replace('/upload','/upload/h_400')
 })
 
+const opts = { toJSON: { virtuals: true } };
+
 const CampgroundSchema=new Schema({
     title:String,
     images:[ImageSchema],
@@ -39,7 +41,7 @@ const CampgroundSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:'Review'
     }],
-});
+},opts);
 
 CampgroundSchema.post('findOneAndDelete',async (doc)=>{
     if(doc){
@@ -52,6 +54,14 @@ CampgroundSchema.post('findOneAndDelete',async (doc)=>{
     console.log('you are in campgroundSchema post middleware');
     console.log(doc);
     console.log('deleted');
+})
+
+CampgroundSchema.virtual('properties.popupMarker').get(function(){
+    return `
+    <b><a href="/campgrounds/${this._id}">${this.title.substring(0,15)}...</a></b>
+    <p>${this.description.slice(0,20)+"..."}(</p>
+    
+    `
 })
 
 module.exports=mongoose.model('Campground',CampgroundSchema);

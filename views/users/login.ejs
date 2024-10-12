@@ -1,28 +1,41 @@
 <% layout('layouts/boilerplate.ejs') %>
-    <h1>Login form</h1>
-    <form action="/login" method="post" class="needs-validation" novalidate>
-        <div>
-            <div class="mb-3">
-                <label for="username" class="form-label">username</label>
-                <input type="text"  class="form-control" name="username" id="username" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-                <div class="invalid-feedback">
-                    Please choose a username.
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">password</label>
-                <input type="password"  class="form-control" name="password" id="password" required></textarea>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-                <div class="invalid-feedback">
-                    Please enter a valid password.
+
+    <div class="container d-flex justify-content-center align-items-center mt-3">
+        <div class="row mx-auto">
+            <div class="col-md-6  col-xl-10 mx-auto">
+                <div class="card shadow">
+                    <img src="https://images.unsplash.com/photo-1604920730665-4d36ea6fe0ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHMlMjB3YWtlJTIwdXB8ZW58MHx8MHx8fDA%3D" alt="An escape view" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Login</h5>
+                        <form action="/login" method="post" class="needs-validation" novalidate>
+                            <div>
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">username</label>
+                                    <input type="text"  class="form-control" name="username" id="username" required autofocus>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please choose a username.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">password</label>
+                                    <input type="password"  class="form-control" name="password" id="password" required></textarea>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid password.
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success col-12 mb-1">Login</button>
+                            <a href="/campgrounds" class="btn btn-danger col-12"> Login later</a>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-success">Login</button>
-        <a href="/campgrounds" class="btn btn-danger"> Register later</a>
-    </form>
+    </div>
+

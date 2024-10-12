@@ -83,6 +83,12 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Styling cluster page
     -Adding popup ppersonnalized
 
+## Capstone YELPCAMP project Step11:Styles Clean Up
+    -Styling an index Page
+    -Styling register Form and login Form
+    -removing inline styles to maps
+    -Adding map control on maps
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

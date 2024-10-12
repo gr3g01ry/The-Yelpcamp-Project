@@ -1,0 +1,50 @@
+*{
+margin:0;
+padding:0;
+}
+body{
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 255, 0.2), rgba(255, 255, 0, 0.4)),  url("/images/EscapeHomePage.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: rgb(68, 68, 68);
+    box-shadow: -3px 6px 10px 2px #363636 inset;
+}
+.cover-container{
+    max-width: 980px;
+}
+header{
+    text-shadow: -3px 6px 3px #242424;
+}
+.nav-link{
+    padding: 0.25rem 0;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: rgb(255, 255, 255);
+    margin-left: 1rem;
+    border-bottom:0.25rem solid transparent;
+    letter-spacing: 0.05rem;
+
+}
+.nav-link:hover{
+    color:#ffffffd8;
+    border-bottom:0.25rem solid white;
+}
+.nav-link.active{
+    color:rgb(255, 219, 13)
+}
+main.px-3{
+    text-shadow: -1px -1px 4px #000;
+}
+.btn-secondary{
+    font-weight: 600;
+    opacity: 0.7;
+    box-shadow: 0 0 14px rgba(255,125,0,1),
+            0 0 20px 5px rgba(255,175,0,0.8),
+            0 0 30px 15px rgba(255,225,0,0.5);
+}
+.btn-secondary:hover{
+    
+    opacity: 0.9;
+}

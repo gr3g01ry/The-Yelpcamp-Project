@@ -16,7 +16,7 @@ const storage = new CloudinaryStorage({
     }
 })
 
-cloudinary.api.root_folders().then((rep)=>{
+cloudinary.api.root_folders('yelptest').then((rep)=>{
     console.log(rep)
 })
 module.exports={storage,cloudinary};

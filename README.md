@@ -89,6 +89,14 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -removing inline styles to maps
     -Adding map control on maps
 
+## Capstone YELPCAMP project Step12:Common minimal security issues
+    -Initiaion on mongo Injection and XSS injection
+    -Sanitizing HTML with JOI and mongo sanitize
+    -cookie params security set to true only on server secure
+    -Hidding errors and production to not show error on client side
+    -Using helmet
+    -params helsmet security policy to limit the src and link on our web site
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

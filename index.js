@@ -1,8 +1,12 @@
-if(process.env.NODE_ENV!=="production"){
-    require('dotenv').config()
-}
-// console.log(process.env.cloudinaryApiKey);
+require('dotenv').config();
 
+if(process.env.NODE_ENV!=="production"){
+    require('dotenv').config();
+    console.log("developpement")
+}
+//use node production with Node== "NODE_ENV=production node index.js"
+//else process.env.node_env=developpement
+console.log(process.env.NODE_ENV)
 const express=require('express');
 const app=express();
 const path = require("path");
@@ -14,6 +18,8 @@ const session=require('express-session');
 const flash = require('connect-flash');
 const passport=require('passport');
 const LocalStrategy=require('passport-local');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet=require('helmet');
 
 const ExpressError=require('./utils/expressError');
 
@@ -49,6 +55,7 @@ const sessionOptions = {
     saveUninitialized: true,
     cookie:{
         httpOnly:true,
+        // secure:true, //only use on server secure
         expires:Date.now()+1000*60*60*24*7,
         maxAge:1000*60*60*24*7,
     } 
@@ -69,8 +76,69 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// To remove data using these defaults:
+app.use(mongoSanitize({
+    replaceWith: '_',
+  }));
+
+//To use helmet security
+//automaticly activate all middleware from helmet
+// app.use(helmet());//block all external link and src
+// app.use(helmet({contentSecurityPolicy:false}));//to display external source , add corssorigin="anonymous" on external link
+app.use(helmet());
+//now we params content security
+const scriptSrcUrls = [
+    // "https://stackpath.bootstrapcdn.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+    // "https://events.mapbox.com/",
+
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    // "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net/"
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = [
+    "https://cdn.jsdelivr.net/",
+];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/student-node/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+
 
 app.use((req, res, next) => {
+    console.log(req.query)
     // console.log(req.user);
     // console.log(req.session);
     res.locals.currentUser=req.user;

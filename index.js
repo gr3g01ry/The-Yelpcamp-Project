@@ -70,7 +70,7 @@ db.once("open",()=>{
 const sessionOptions = {
     store:store, 
     name:'session_cookie',
-    secret: 'ILoveToLove', 
+    secret: process.env.sessionOptionsSecret, 
     resave: false, 
     saveUninitialized: true,
     cookie:{

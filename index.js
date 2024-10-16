@@ -6,7 +6,8 @@ if(process.env.NODE_ENV!=="production"){
 }
 //use node production with Node== "NODE_ENV=production node index.js"
 //else process.env.node_env=developpement
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)
+
 const express=require('express');
 const app=express();
 const path = require("path");
@@ -20,6 +21,8 @@ const passport=require('passport');
 const LocalStrategy=require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet=require('helmet');
+// const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const ExpressError=require('./utils/expressError');
 
@@ -32,7 +35,23 @@ const User = require('./models/user');
 
 //Connecting to mongoose
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://localhost:27017/yelp-camp',{
+//We connect our db on a cloud database
+//'mongodb://localhost:27017/yelp-camp'
+const dbUrl=process.env.DB_URL
+// const dbUrl='mongodb://localhost:27017/yelp-camp'
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.sotoreCryptoSecret//process.env.crypto_secret
+    }
+});
+store.on("error",function(e){
+    console.log("Session store error" +e);
+})
+
+mongoose.connect(dbUrl,{
     /*OLD WAY NO MORE NEED */
     // useNewUrlParser:true,
     // useCreateIndex:true,
@@ -48,7 +67,8 @@ db.once("open",()=>{
 });
 
 //Session configuration
-const sessionOptions = { 
+const sessionOptions = {
+    store:store, 
     name:'session_cookie',
     secret: 'ILoveToLove', 
     resave: false, 

@@ -97,6 +97,11 @@ Purpose is to not crash server and be able to catch all kind error and give info
     -Using helmet
     -params helsmet security policy to limit the src and link on our web site
 
+## Capstone YELPCAMP project Step12:Deploying
+    -Setting mongo atlas cloud for db
+    -Setting using mongo for session store
+    -Deploying no render
+
 ## Authors
 
 - [@grrgory-Berault](https://github.com/gr3g01ry)

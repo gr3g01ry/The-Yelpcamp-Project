@@ -37,14 +37,14 @@ const User = require('./models/user');
 mongoose.set('strictQuery', true);
 //We connect our db on a cloud database
 //'mongodb://localhost:27017/yelp-camp'
-const dbUrl=process.env.DB_URL ||'mongodb://localhost:27017/yelp-camp';
-// const dbUrl='mongodb://localhost:27017/yelp-camp'
+// const dbUrl=process.env.DB_URL ||'mongodb://localhost:27017/yelp-camp';
+const dbUrl='mongodb://localhost:27017/yelp-camp'
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: process.env.sotoreCryptoSecret||"thishouldbeabettersecret" ,//process.env.crypto_secret
+        secret: process.env.storeCryptoSecret||"thishouldbeabettersecret" ,//process.env.crypto_secret
     }
 });
 store.on("error",function(e){

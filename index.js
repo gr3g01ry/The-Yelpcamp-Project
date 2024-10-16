@@ -37,14 +37,14 @@ const User = require('./models/user');
 mongoose.set('strictQuery', true);
 //We connect our db on a cloud database
 //'mongodb://localhost:27017/yelp-camp'
-const dbUrl=process.env.DB_URL
+const dbUrl=process.env.DB_URL ||'mongodb://localhost:27017/yelp-camp';
 // const dbUrl='mongodb://localhost:27017/yelp-camp'
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: process.env.sotoreCryptoSecret//process.env.crypto_secret
+        secret: process.env.sotoreCryptoSecret||"thishouldbeabettersecret" ,//process.env.crypto_secret
     }
 });
 store.on("error",function(e){
@@ -70,7 +70,7 @@ db.once("open",()=>{
 const sessionOptions = {
     store:store, 
     name:'session_cookie',
-    secret: process.env.sessionOptionsSecret, 
+    secret: process.env.sessionOptionsSecret ||"thisshoulbeabettersecret", 
     resave: false, 
     saveUninitialized: true,
     cookie:{
@@ -200,7 +200,8 @@ app.use('/',usersRoad);
 
 
 
-const port=3000;
+// const port=3000;
+const port=process.env.PORT||3000;
 
 app.get('/',(req,res)=>{
     res.render('home.ejs')

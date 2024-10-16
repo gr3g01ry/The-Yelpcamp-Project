@@ -37,8 +37,8 @@ const User = require('./models/user');
 mongoose.set('strictQuery', true);
 //We connect our db on a cloud database
 //'mongodb://localhost:27017/yelp-camp'
-// const dbUrl=process.env.DB_URL ||'mongodb://localhost:27017/yelp-camp';
-const dbUrl='mongodb://localhost:27017/yelp-camp'
+const dbUrl=process.env.DB_URL ||'mongodb://localhost:27017/yelp-camp';
+// const dbUrl='mongodb://localhost:27017/yelp-camp'
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,

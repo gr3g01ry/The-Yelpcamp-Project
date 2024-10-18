@@ -138,7 +138,7 @@
                                 </p>
                                 <p class="card-text">Description :<%=review.body%></p>
                                 <%if(currentUser && review.author.equals(currentUser._id)){%>
-                                    <h6>Yur review</h1>
+                                    <h6>Your review</h1>
                                     <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
                                         <input type="submit" value="Delete " class="btn btn-danger border border-warning">
                                         </form>
